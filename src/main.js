@@ -46,9 +46,57 @@ loadMoreBtn.addEventListener('click', async () => {
   await fetchImages();
 });
 
+// async function fetchImages() {
+//   try {
+//     showLoader();
+
+//     const data = await getImagesByQuery(query, page);
+
+//     if (data.hits.length === 0 && page === 1) {
+//       iziToast.error({
+//         message:
+//           'Sorry, there are no images matching your search query. Please try again!',
+//         position: 'topRight',
+//       });
+//       hideLoadMoreButton();
+//       return;
+//     }
+
+//     createGallery(data.hits);
+//     totalHits = data.totalHits;
+
+//     const totalPages = Math.ceil(totalHits / PER_PAGE);
+
+//     if (page >= totalPages) {
+//       hideLoadMoreButton();
+
+//       iziToast.info({
+//         message: "We're sorry, but you've reached the end of search results.",
+//         position: 'topRight',
+//       });
+
+//       return;
+//     }
+
+//     showLoadMoreButton();
+
+//     if (page > 1) {
+//       smoothScroll();
+//     }
+//   } catch (error) {
+//     iziToast.error({
+//       message: 'Something went wrong. Please try again later.',
+//       position: 'topRight',
+//     });
+//   } finally {
+//     hideLoader();
+//   }
+// }
+
 async function fetchImages() {
   try {
     showLoader();
+    hideLoadMoreButton();
 
     const data = await getImagesByQuery(query, page);
 
@@ -58,7 +106,6 @@ async function fetchImages() {
           'Sorry, there are no images matching your search query. Please try again!',
         position: 'topRight',
       });
-      hideLoadMoreButton();
       return;
     }
 
@@ -68,14 +115,11 @@ async function fetchImages() {
     const totalPages = Math.ceil(totalHits / PER_PAGE);
 
     if (page >= totalPages) {
-      hideLoadMoreButton();
-
       iziToast.info({
         message: "We're sorry, but you've reached the end of search results.",
         position: 'topRight',
       });
-
-      return; 
+      return;
     }
 
     showLoadMoreButton();
@@ -92,6 +136,8 @@ async function fetchImages() {
     hideLoader();
   }
 }
+
+
 
 function smoothScroll() {
   const card = document.querySelector('.gallery-item');
